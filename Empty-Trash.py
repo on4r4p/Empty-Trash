@@ -48,7 +48,17 @@ def main():
                 print("-%s account is active."%friend.screen_name)
 
         except Exception as e:
-              print("\nError :",e)
+              if "list index out of range" in e:
+                  print("-User has no tweets")
+                  print("-Unfollowing :", friend.screen_name)
+                  api.destroy_friendship(screen_name=friend.screen_name)
+              elif "401 Unauthorized" in e:
+                  print("-Tweets from %s are hidden.",friend.screen_name)
+                  print("-Unfollowing :", friend.screen_name)
+                  api.destroy_friendship(screen_name=friend.screen_name)
+
+              else:
+                 print("\nError :",e)
               time.sleep(5)
 
 ####
@@ -74,16 +84,27 @@ def main():
                 print("-%s account is active."%friend.screen_name)
 
         except Exception as e:
-              print("\nError :",e)
+              if "list index out of range" in e:
+                  print("-User has no tweets")
+                  print("-Unfollowing :", friend.screen_name)
+                  api.destroy_friendship(screen_name=friend.screen_name)
+              elif "401 Unauthorized" in e:
+                  print("-Tweets from %s are hidden.",friend.screen_name)
+                  print("-Unfollowing :", friend.screen_name)
+                  api.destroy_friendship(screen_name=friend.screen_name)
+              else:
+                 print("\nError :",e)
               time.sleep(5)
 
 
-    if (len(inactives) > 0):
+    if len(inactives) > 0:
 
         for friend in inactives:
             print(friend.screen_name)
 
         print("The %s users above were inactives for more than %s days and has been unfollowed." %(len(inactives),Inactive_Day))
+    else:
+        print("No inactives users were found.")
 
 if __name__ == "__main__":
     main()
