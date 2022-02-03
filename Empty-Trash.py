@@ -48,11 +48,11 @@ def main():
                 print("-%s account is active."%friend.screen_name)
 
         except Exception as e:
-              if "list index out of range" in e:
+              if "list index out of range" in str(e):
                   print("-User has no tweets")
                   print("-Unfollowing :", friend.screen_name)
                   api.destroy_friendship(screen_name=friend.screen_name)
-              elif "401 Unauthorized" in e:
+              elif "401 Unauthorized" in str(e):
                   print("-Tweets from %s are hidden.",friend.screen_name)
                   print("-Unfollowing :", friend.screen_name)
                   api.destroy_friendship(screen_name=friend.screen_name)
@@ -84,11 +84,11 @@ def main():
                 print("-%s account is active."%friend.screen_name)
 
         except Exception as e:
-              if "list index out of range" in e:
+              if "list index out of range" in str(e):
                   print("-User has no tweets")
                   print("-Unfollowing :", friend.screen_name)
                   api.destroy_friendship(screen_name=friend.screen_name)
-              elif "401 Unauthorized" in e:
+              elif "401 Unauthorized" in str(e):
                   print("-Tweets from %s are hidden.",friend.screen_name)
                   print("-Unfollowing :", friend.screen_name)
                   api.destroy_friendship(screen_name=friend.screen_name)
