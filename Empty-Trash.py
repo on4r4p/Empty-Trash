@@ -5,7 +5,11 @@ import sys
 from keyconf import Config
 from datetime import date
 
+Go = False
+
 def main():
+    global Go
+
     Api_Key = Config['Api_Key']
     Api_Secret = Config['Api_Secret']
     Bearer_Token = Config['Bearer_Token']
@@ -18,7 +22,8 @@ def main():
     auth = tweepy.OAuthHandler(Api_Key, Api_Secret)
     auth.set_access_token(Access_Token,Access_Secret)
 
-    api = tweepy.API(auth, retry_count=3, timeout=20,wait_on_rate_limit=True)
+#    api = tweepy.API(auth, retry_count=10, retry_delay=30, timeout=60,wait_on_rate_limit=True)
+    api = tweepy.API(auth, retry_count=3, retry_delay=5, timeout=30,wait_on_rate_limit=True)
     user = api.get_user(screen_name=Account_ScreeName)
 
     print("%s has %s friends"%(Account_ScreeName,user.followers_count))
@@ -30,6 +35,10 @@ def main():
 
     for friend in tweepy.Cursor(api.get_friends, screen_name=user.screen_name).items():
         print("\n***\n-Friend: ", friend.screen_name)
+#        if "crazyjunkie1" == friend.screen_name:
+#           Go = True
+#        if Go is False:
+#               continue
         try:
             tweets_list= api.user_timeline(screen_name = friend.screen_name, count = 1)
             tweet= tweets_list[0] 
@@ -53,7 +62,7 @@ def main():
                   print("-Unfollowing :", friend.screen_name)
                   api.destroy_friendship(screen_name=friend.screen_name)
               elif "401 Unauthorized" in str(e):
-                  print("-Tweets from %s are hidden.",friend.screen_name)
+                  print("-Tweets from %s are hidden."%friend.screen_name)
                   print("-Unfollowing :", friend.screen_name)
                   api.destroy_friendship(screen_name=friend.screen_name)
 
@@ -89,7 +98,7 @@ def main():
                   print("-Unfollowing :", friend.screen_name)
                   api.destroy_friendship(screen_name=friend.screen_name)
               elif "401 Unauthorized" in str(e):
-                  print("-Tweets from %s are hidden.",friend.screen_name)
+                  print("-Tweets from %s are hidden."%friend.screen_name)
                   print("-Unfollowing :", friend.screen_name)
                   api.destroy_friendship(screen_name=friend.screen_name)
               else:
